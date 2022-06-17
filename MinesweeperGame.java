@@ -26,10 +26,19 @@ public class MinesweeperGame extends Game {
                 }
                 gameField[y][x] = new GameObject(x, y, isMine);
                 setCellColor(x, y, Color.ORANGE);
+
             }
+        }
+        countMineNeighbors();
+        for (int i = 0; i < gameField.length; i++) {
+            for (int j = 0; j < gameField[i].length; j++) {
+                System.out.print(gameField[i][j].isMine + " ");
+            }
+            System.out.println();
         }
     }
 
+    //получение списка соседей
     private List<GameObject> getNeighbors(GameObject gameObject) {
         List<GameObject> result = new ArrayList<>();
         for (int y = gameObject.y - 1; y <= gameObject.y + 1; y++) {
@@ -49,7 +58,39 @@ public class MinesweeperGame extends Game {
         return result;
     }
 
-    private void CountMineNeighbors(){
-        
+    // для каждой ячейки "не мины" из матрицы gameField подсчитать количество соседних ячеек "мин"
+    // и установить это значение в поле countMineNeighbors
+    private void countMineNeighbors() {
+
+        for (int y = 0; y < SIDE; y++) {
+            for (int x = 0; x < SIDE; x++) {
+                if (!gameField[y][x].isMine) {
+                    int count = 0;
+                    List<GameObject> list = getNeighbors(gameField[y][x]);
+
+                    for (GameObject gameObject : list) {
+                        if (gameObject.isMine) {
+                            count++;
+                            System.out.println(count);
+                            gameField[y][x].countMineNeighbors++;
+
+                        }
+
+
+                    }
+                   
+                }
+
+
+            }
+        }
+        for (int i = 0; i < gameField.length; i++) {
+            for (int j = 0; j < gameField[i].length; j++) {
+                System.out.print(gameField[i][j].countMineNeighbors + " ");
+            }
+            System.out.println();
+        }
+
     }
+
 }
